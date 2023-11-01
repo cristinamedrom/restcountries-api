@@ -7,13 +7,20 @@ const cardTemplate = function (/* You can pass the data here*/) {
 
 const countriesNode = document.getElementById("countries");
 
-fetch(/* Need the provide API URL to get all countries */)
+fetch('https://restcountries.com/v3.1/all')
   .then(function (response) {
     // fetch() returns a promise containing the response (a Response object).
     // This is just an HTTP response, not the actual JSON. 
     // To extract the JSON body content from the response, 
     // we use the json() method and pass it into the next .then()
-  })
+
+    if(!response.ok) {
+      throw new Error ('Error al realizar la solicitud')
+    }
+    return response.json()
+
+    })
+
   .then(function (countries) {
     // Here is where you'll need to add into the DOM all the countries received from API 
 
