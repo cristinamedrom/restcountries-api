@@ -16,6 +16,33 @@ const cardTemplate = function (infoCountries) {
 
 const countriesNode = document.getElementById("countries");
 
+const continentSelect = document.getElementById("continent-select");
+continentSelect.addEventListener("change", function () {
+  const selectedContinent = continentSelect.value;
+
+  const apiUrl = `https://restcountries.com/v3.1/region/${selectedContinent}`;
+
+  fetch(apiUrl)
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error('Error al realizar la solicitud');
+      }
+      return response.json();
+    })
+    .then(function (countries) {
+
+      countriesNode.innerHTML = "";
+
+      countries.forEach(function (infoCountries) {
+        const detallesCountry = cardTemplate(infoCountries);
+        countriesNode.innerHTML += detallesCountry;
+      });
+    })
+    .catch(function (error) {
+      console.error('Error al obtener los datos');
+    });
+});
+
 fetch('https://restcountries.com/v3.1/all')
   .then(function (response) {
     // fetch() returns a promise containing the response (a Response object).
@@ -23,7 +50,7 @@ fetch('https://restcountries.com/v3.1/all')
     // To extract the JSON body content from the response, 
     // we use the json() method and pass it into the next .then()
 
-if (!response.ok) {
+    if (!response.ok) {
       throw new Error('Error al realizar la solicitud');
     }
     return response.json();
